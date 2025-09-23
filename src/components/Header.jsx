@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Avatar, Dropdown, Button, Space, message } from 'antd';
-import { UserOutlined, LogoutOutlined, SettingOutlined } from '@ant-design/icons';
+import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
@@ -31,7 +31,6 @@ const Header = () => {
             label: 'Trang cá nhân',
             onClick: () => {
 
-
             },
         },
         {
@@ -40,7 +39,22 @@ const Header = () => {
             label: 'Cài đặt',
             onClick: () => {
 
-
+            },
+        },
+        {
+            key: 'register-provider',
+            icon: <CopyOutlined />,
+            label: 'Đăng ký nhà cung cấp',
+            onClick: () => {
+                navigate('/apply-provider');
+            },
+        },
+        {
+            key: 'my-applications',
+            icon: <FileTextOutlined />,
+            label: 'Đơn đăng ký của tôi',
+            onClick: () => {
+                navigate('/my-applications');
             },
         },
         {
