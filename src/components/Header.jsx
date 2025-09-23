@@ -3,6 +3,7 @@ import { Layout, Avatar, Dropdown, Button, Space, message } from 'antd';
 import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
+import { getAvatarUrl } from '../utils/imageUtils';
 
 const { Header: AntHeader } = Layout;
 
@@ -117,7 +118,7 @@ const Header = () => {
                         <Avatar
                             size="small"
                             icon={<UserOutlined />}
-                            src={user?.avatarUrl}
+                            src={getAvatarUrl(user?.avatarUrl)}
                         />
                     </Button>
                 </Dropdown>

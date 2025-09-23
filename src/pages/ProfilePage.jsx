@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined, CameraOutlined, EditOutlined, SaveOutlined 
 import { useNavigate } from 'react-router-dom';
 import { userService } from '../services/userService';
 import { authService } from '../services/authService';
+import { getAvatarUrl } from '../utils/imageUtils';
 import dayjs from 'dayjs';
 
 const { Sider, Content } = Layout;
@@ -188,7 +189,7 @@ const ProfilePage = () => {
                         <div style={{ position: 'relative', display: 'inline-block' }}>
                             <Avatar
                                 size={120}
-                                src={userProfile.avatarUrl}
+                                src={getAvatarUrl(userProfile.avatarUrl)}
                                 icon={<UserOutlined />}
                                 style={{
                                     border: '4px solid #f0f0f0',
