@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ApplicationFormPage from './pages/ApplicationFormPage';
 import ApplicationManagementPage from './pages/ApplicationManagementPage';
 import EditApplicationPage from './pages/EditApplicationPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -57,6 +58,16 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <EditApplicationPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <ProfilePage />
                 </AppLayout>
               </ProtectedRoute>
             }

@@ -30,7 +30,7 @@ const Header = () => {
             icon: <UserOutlined />,
             label: 'Trang cá nhân',
             onClick: () => {
-
+                navigate('/profile');
             },
         },
         {
