@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Avatar, Dropdown, Button, Space, message } from 'antd';
-import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined } from '@ant-design/icons';
+import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined, CalendarOutlined, AppstoreOutlined, DashboardOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { getAvatarUrl } from '../utils/imageUtils';
@@ -25,49 +25,125 @@ const Header = () => {
     };
 
 
-    const userMenuItems = [
-        {
-            key: 'profile',
-            icon: <UserOutlined />,
-            label: 'Trang cá nhân',
-            onClick: () => {
-                navigate('/profile');
+    const getUserMenuItems = () => {
+        const baseItems = [
+            {
+                key: 'profile',
+                icon: <UserOutlined />,
+                label: 'Trang cá nhân',
+                onClick: () => {
+                    navigate('/profile');
+                },
             },
-        },
-        {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: 'Cài đặt',
-            onClick: () => {
+        ];
 
-            },
-        },
-        {
-            key: 'register-provider',
-            icon: <CopyOutlined />,
-            label: 'Đăng ký nhà cung cấp',
-            onClick: () => {
-                navigate('/apply-provider');
-            },
-        },
-        {
-            key: 'my-applications',
-            icon: <FileTextOutlined />,
-            label: 'Đơn đăng ký của tôi',
-            onClick: () => {
-                navigate('/my-applications');
-            },
-        },
-        {
+        const logoutItem = {
             type: 'divider',
-        },
-        {
+        };
+
+        const logoutButton = {
             key: 'logout',
             icon: <LogoutOutlined />,
             label: 'Đăng xuất',
             onClick: handleLogout,
-        },
-    ];
+        };
+
+        switch (user?.role) {
+            case 'USER':
+                return [
+                    ...baseItems,
+                    {
+                        key: 'register-provider',
+                        icon: <CopyOutlined />,
+                        label: 'Đăng ký nhà cung cấp',
+                        onClick: () => {
+                            navigate('/apply-provider');
+                        },
+                    },
+                    {
+                        key: 'my-applications',
+                        icon: <FileTextOutlined />,
+                        label: 'Đơn đăng ký của tôi',
+                        onClick: () => {
+                            navigate('/my-applications');
+                        },
+                    },
+                    {
+                        key: 'appointments',
+                        icon: <CalendarOutlined />,
+                        label: 'Lịch hẹn của tôi',
+                        onClick: () => {
+                            message.info('Tính năng lịch hẹn đang được phát triển');
+                        },
+                    },
+                    logoutItem,
+                    logoutButton,
+                ];
+
+            case 'PROVIDER':
+                return [
+                    ...baseItems,
+                    {
+                        key: 'register-provider',
+                        icon: <CopyOutlined />,
+                        label: 'Đăng ký nhà cung cấp',
+                        onClick: () => {
+                            navigate('/apply-provider');
+                        },
+                    },
+                    {
+                        key: 'my-applications',
+                        icon: <FileTextOutlined />,
+                        label: 'Đơn đăng ký của tôi',
+                        onClick: () => {
+                            navigate('/my-applications');
+                        },
+                    },
+                    {
+                        key: 'appointments',
+                        icon: <CalendarOutlined />,
+                        label: 'Lịch hẹn của tôi',
+                        onClick: () => {
+                            message.info('Tính năng lịch hẹn đang được phát triển');
+                        },
+                    },
+                    {
+                        key: 'manage-services',
+                        icon: <AppstoreOutlined />,
+                        label: 'Quản lý dịch vụ',
+                        onClick: () => {
+                            message.info('Tính năng quản lý dịch vụ đang được phát triển');
+                        },
+                    },
+                    logoutItem,
+                    logoutButton,
+                ];
+
+            case 'ADMIN':
+                return [
+                    ...baseItems,
+                    {
+                        key: 'admin-dashboard',
+                        icon: <DashboardOutlined />,
+                        label: 'Trang quản trị',
+                        onClick: () => {
+                            message.info('Tính năng trang quản trị đang được phát triển');
+                        },
+                    },
+                    logoutItem,
+                    logoutButton,
+                ];
+
+            default:
+                return [
+                    ...baseItems,
+                    logoutItem,
+                    logoutButton,
+                ];
+        }
+    };
+
+    const userMenuItems = getUserMenuItems();
 
     return (
         <AntHeader
