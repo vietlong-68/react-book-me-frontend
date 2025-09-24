@@ -127,7 +127,7 @@ const Header = () => {
                         icon: <DashboardOutlined />,
                         label: 'Trang quản trị',
                         onClick: () => {
-                            message.info('Tính năng trang quản trị đang được phát triển');
+                            navigate('/admin');
                         },
                     },
                     logoutItem,
