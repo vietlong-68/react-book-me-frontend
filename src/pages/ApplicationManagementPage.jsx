@@ -268,84 +268,77 @@ const ApplicationManagementPage = () => {
                         </Empty>
                     </Card>
                 ) : (
-                    <Row gutter={[16, 16]}>
+                    <div>
                         {applications.map((application) => {
                             const statusConfig = getStatusConfig(application.status);
 
                             return (
-                                <Col xs={24} sm={12} lg={8} key={application.id}>
-                                    <Card
-                                        hoverable
-                                        style={{
-                                            height: '100%',
-                                            borderRadius: '12px',
-                                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                                        }}
-                                        bodyStyle={{ padding: '20px' }}
-                                    >
+                                <Card
+                                    key={application.id}
+                                    hoverable
+                                    style={{
+                                        marginBottom: '16px',
+                                        borderRadius: '12px',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                    }}
+                                    bodyStyle={{ padding: '16px' }}
+                                >
+                                    <Row gutter={[16, 16]} align="middle">
+                                        { }
+                                        <Col xs={24} sm={12} md={8}>
+                                            <div>
+                                                <Title level={4} style={{ marginBottom: '4px', color: '#1e3a8a' }}>
+                                                    {application.businessName}
+                                                </Title>
+                                                <Tag
+                                                    color={statusConfig.color}
+                                                    icon={statusConfig.icon}
+                                                    style={{ fontSize: '12px', padding: '2px 6px' }}
+                                                >
+                                                    {statusConfig.text}
+                                                </Tag>
+                                            </div>
+                                        </Col>
 
-                                        <div style={{ marginBottom: '16px' }}>
-                                            <Title level={4} style={{ marginBottom: '8px', color: '#1e3a8a' }}>
-                                                {application.businessName}
-                                            </Title>
-                                            <Tag
-                                                color={statusConfig.color}
-                                                icon={statusConfig.icon}
-                                                style={{ fontSize: '12px', padding: '4px 8px' }}
-                                            >
-                                                {statusConfig.text}
-                                            </Tag>
-                                        </div>
-
-
-                                        <div style={{ marginBottom: '16px' }}>
-                                            <Row gutter={[8, 8]}>
-                                                <Col span={24}>
-                                                    <Text type="secondary" style={{ fontSize: '12px' }}>
-                                                        Ngày nộp đơn:
-                                                    </Text>
-                                                    <br />
-                                                    <Text strong>
-                                                        {dayjs(application.createdAt).format('DD/MM/YYYY HH:mm')}
-                                                    </Text>
-                                                </Col>
+                                        { }
+                                        <Col xs={24} sm={12} md={8}>
+                                            <div>
+                                                <Text type="secondary" style={{ fontSize: '12px' }}>
+                                                    Ngày nộp đơn:
+                                                </Text>
+                                                <br />
+                                                <Text strong style={{ fontSize: '13px' }}>
+                                                    {dayjs(application.createdAt).format('DD/MM/YYYY HH:mm')}
+                                                </Text>
                                                 {application.bio && (
-                                                    <Col span={24}>
+                                                    <>
+                                                        <br />
                                                         <Text type="secondary" style={{ fontSize: '12px' }}>
                                                             Giới thiệu:
                                                         </Text>
                                                         <br />
-                                                        <Text style={{ fontSize: '13px' }}>
-                                                            {application.bio.length > 100
-                                                                ? `${application.bio.substring(0, 100)}...`
+                                                        <Text style={{ fontSize: '12px' }}>
+                                                            {application.bio.length > 50
+                                                                ? `${application.bio.substring(0, 50)}...`
                                                                 : application.bio
                                                             }
                                                         </Text>
-                                                    </Col>
+                                                    </>
                                                 )}
-                                                {application.address && (
-                                                    <Col span={24}>
-                                                        <Text type="secondary" style={{ fontSize: '12px' }}>
-                                                            Địa chỉ:
-                                                        </Text>
-                                                        <br />
-                                                        <Text style={{ fontSize: '13px' }}>
-                                                            {application.address}
-                                                        </Text>
-                                                    </Col>
-                                                )}
-                                            </Row>
-                                        </div>
+                                            </div>
+                                        </Col>
 
-
-                                        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: '16px' }}>
-                                            {renderStatusContent(application)}
-                                        </div>
-                                    </Card>
-                                </Col>
+                                        { }
+                                        <Col xs={24} sm={24} md={8}>
+                                            <div style={{ textAlign: 'right' }}>
+                                                {renderStatusContent(application)}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Card>
                             );
                         })}
-                    </Row>
+                    </div>
                 )}
             </div>
 
