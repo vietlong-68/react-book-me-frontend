@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, message, Typography, Tag, Space, Modal, Row, Col, Empty, Spin } from 'antd';
-import { EditOutlined, DeleteOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Button, message, Typography, Tag, Space, Modal, Row, Col, Empty, Spin, Image, Divider } from 'antd';
+import { EditOutlined, DeleteOutlined, CheckCircleOutlined, CloseCircleOutlined, ClockCircleOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { providerApplicationService } from '../services/providerApplicationService';
+import { getImageUrl } from '../utils/imageUtils';
 import dayjs from 'dayjs';
 
 const { Title, Text } = Typography;
@@ -11,6 +12,9 @@ const ApplicationManagementPage = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState({});
+    const [detailModalVisible, setDetailModalVisible] = useState(false);
+    const [selectedApplication, setSelectedApplication] = useState(null);
+    const [detailLoading, setDetailLoading] = useState(false);
     const navigate = useNavigate();
 
 
@@ -70,6 +74,26 @@ const ApplicationManagementPage = () => {
         navigate(`/edit-application/${applicationId}`);
     };
 
+    const handleViewDetail = async (applicationId) => {
+        setDetailLoading(true);
+        setDetailModalVisible(true);
+        try {
+            const response = await providerApplicationService.getApplicationById(applicationId);
+            if (response.success) {
+                setSelectedApplication(response.data);
+            } else {
+                message.error(response.message || 'Không thể tải thông tin chi tiết!');
+                setDetailModalVisible(false);
+            }
+        } catch (error) {
+            const errorMessage = error.message || error.response?.data?.message || 'Không thể tải thông tin chi tiết!';
+            message.error(errorMessage);
+            setDetailModalVisible(false);
+        } finally {
+            setDetailLoading(false);
+        }
+    };
+
 
     const getStatusConfig = (status) => {
         switch (status) {
@@ -109,6 +133,12 @@ const ApplicationManagementPage = () => {
                 return (
                     <Space>
                         <Button
+                            icon={<EyeOutlined />}
+                            onClick={() => handleViewDetail(application.id)}
+                        >
+                            Xem chi tiết
+                        </Button>
+                        <Button
                             type="primary"
                             icon={<EditOutlined />}
                             onClick={() => handleEditApplication(application.id)}
@@ -132,9 +162,15 @@ const ApplicationManagementPage = () => {
                         <Title level={4} style={{ color: '#52c41a', marginBottom: '8px' }}>
                             Chúc mừng!
                         </Title>
-                        <Text type="secondary">
+                        <Text type="secondary" style={{ marginBottom: '16px', display: 'block' }}>
                             Đơn đăng ký của bạn đã được duyệt. Bạn có thể bắt đầu cung cấp dịch vụ.
                         </Text>
+                        <Button
+                            icon={<EyeOutlined />}
+                            onClick={() => handleViewDetail(application.id)}
+                        >
+                            Xem chi tiết
+                        </Button>
                     </div>
                 );
             case 'REJECTED':
@@ -144,9 +180,15 @@ const ApplicationManagementPage = () => {
                         <Title level={4} style={{ color: '#ff4d4f', marginBottom: '8px' }}>
                             Rất tiếc!
                         </Title>
-                        <Text type="secondary">
+                        <Text type="secondary" style={{ marginBottom: '16px', display: 'block' }}>
                             Đơn đăng ký của bạn đã bị từ chối. Vui lòng liên hệ với chúng tôi để biết thêm chi tiết.
                         </Text>
+                        <Button
+                            icon={<EyeOutlined />}
+                            onClick={() => handleViewDetail(application.id)}
+                        >
+                            Xem chi tiết
+                        </Button>
                     </div>
                 );
             default:
@@ -306,6 +348,170 @@ const ApplicationManagementPage = () => {
                     </Row>
                 )}
             </div>
+
+
+            <Modal
+                title="Chi tiết đơn đăng ký"
+                open={detailModalVisible}
+                onCancel={() => {
+                    setDetailModalVisible(false);
+                    setSelectedApplication(null);
+                }}
+                footer={null}
+                width={800}
+                centered
+            >
+                {detailLoading ? (
+                    <div style={{ textAlign: 'center', padding: '40px' }}>
+                        <Spin size="large" />
+                    </div>
+                ) : selectedApplication ? (
+                    <div>
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <Title level={3} style={{ color: '#1e3a8a', marginBottom: '8px' }}>
+                                {selectedApplication.businessName}
+                            </Title>
+                            <Tag
+                                color={getStatusConfig(selectedApplication.status).color}
+                                icon={getStatusConfig(selectedApplication.status).icon}
+                                style={{ fontSize: '14px', padding: '6px 12px' }}
+                            >
+                                {getStatusConfig(selectedApplication.status).text}
+                            </Tag>
+                        </div>
+
+                        <Divider />
+
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <Title level={4} style={{ color: '#1e3a8a', marginBottom: '16px' }}>
+                                Thông tin cơ bản
+                            </Title>
+                            <Row gutter={[16, 16]}>
+                                <Col span={12}>
+                                    <div>
+                                        <Text type="secondary" style={{ fontSize: '12px' }}>Ngày nộp đơn</Text>
+                                        <br />
+                                        <Text strong>
+                                            {dayjs(selectedApplication.createdAt).format('DD/MM/YYYY HH:mm')}
+                                        </Text>
+                                    </div>
+                                </Col>
+                                <Col span={12}>
+                                    <div>
+                                        <Text type="secondary" style={{ fontSize: '12px' }}>Cập nhật lần cuối</Text>
+                                        <br />
+                                        <Text strong>
+                                            {dayjs(selectedApplication.updatedAt).format('DD/MM/YYYY HH:mm')}
+                                        </Text>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </div>
+
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <Title level={4} style={{ color: '#1e3a8a', marginBottom: '16px' }}>
+                                Thông tin doanh nghiệp
+                            </Title>
+                            <Row gutter={[16, 16]}>
+                                {selectedApplication.bio && (
+                                    <Col span={24}>
+                                        <div>
+                                            <Text type="secondary" style={{ fontSize: '12px' }}>Giới thiệu</Text>
+                                            <br />
+                                            <Text>{selectedApplication.bio}</Text>
+                                        </div>
+                                    </Col>
+                                )}
+                                {selectedApplication.address && (
+                                    <Col span={12}>
+                                        <div>
+                                            <Text type="secondary" style={{ fontSize: '12px' }}>Địa chỉ</Text>
+                                            <br />
+                                            <Text>{selectedApplication.address}</Text>
+                                        </div>
+                                    </Col>
+                                )}
+                                {selectedApplication.phoneNumber && (
+                                    <Col span={12}>
+                                        <div>
+                                            <Text type="secondary" style={{ fontSize: '12px' }}>Số điện thoại</Text>
+                                            <br />
+                                            <Text>{selectedApplication.phoneNumber}</Text>
+                                        </div>
+                                    </Col>
+                                )}
+                                {selectedApplication.websiteUrl && (
+                                    <Col span={24}>
+                                        <div>
+                                            <Text type="secondary" style={{ fontSize: '12px' }}>Website</Text>
+                                            <br />
+                                            <Text>
+                                                <a href={selectedApplication.websiteUrl} target="_blank" rel="noopener noreferrer">
+                                                    {selectedApplication.websiteUrl}
+                                                </a>
+                                            </Text>
+                                        </div>
+                                    </Col>
+                                )}
+                            </Row>
+                        </div>
+
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <Title level={4} style={{ color: '#1e3a8a', marginBottom: '16px' }}>
+                                Giấy phép kinh doanh
+                            </Title>
+                            {selectedApplication.businessLicenseFileUrl ? (
+                                <div style={{ textAlign: 'center' }}>
+                                    <Image
+                                        src={getImageUrl(selectedApplication.businessLicenseFileUrl)}
+                                        alt="Giấy phép kinh doanh"
+                                        style={{
+                                            maxWidth: '400px',
+                                            maxHeight: '300px',
+                                            width: '100%',
+                                            height: 'auto',
+                                            borderRadius: '8px',
+                                            objectFit: 'contain'
+                                        }}
+                                        preview={{
+                                            mask: 'Xem ảnh',
+                                            src: getImageUrl(selectedApplication.businessLicenseFileUrl)
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <Text type="secondary">Không có ảnh giấy phép kinh doanh</Text>
+                            )}
+                        </div>
+
+
+                        <Divider />
+                        <div style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Button onClick={() => setDetailModalVisible(false)}>
+                                    Đóng
+                                </Button>
+                                {selectedApplication.status === 'PENDING' && (
+                                    <Button
+                                        type="primary"
+                                        icon={<EditOutlined />}
+                                        onClick={() => {
+                                            setDetailModalVisible(false);
+                                            handleEditApplication(selectedApplication.id);
+                                        }}
+                                    >
+                                        Chỉnh sửa
+                                    </Button>
+                                )}
+                            </Space>
+                        </div>
+                    </div>
+                ) : null}
+            </Modal>
         </div>
     );
 };
