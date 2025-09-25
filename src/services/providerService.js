@@ -181,5 +181,14 @@ export const providerService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+    async searchServices(searchTerm, page = 0, size = 10, sortBy = 'createdAt', sortDir = 'desc') {
+        try {
+            const response = await apiClient.get(`/search/services?searchTerm=${encodeURIComponent(searchTerm)}&page=${page}&size=${size}&sortBy=${sortBy}&sortDir=${sortDir}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };

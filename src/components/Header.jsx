@@ -1,6 +1,6 @@
-import React from 'react';
-import { Layout, Avatar, Dropdown, Button, Space, message } from 'antd';
-import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined, CalendarOutlined, AppstoreOutlined, DashboardOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Layout, Avatar, Dropdown, Button, Space, message, Input } from 'antd';
+import { UserOutlined, LogoutOutlined, SettingOutlined, CopyOutlined, FileTextOutlined, CalendarOutlined, AppstoreOutlined, DashboardOutlined, SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 import { getAvatarUrl } from '../utils/imageUtils';
@@ -10,6 +10,7 @@ const { Header: AntHeader } = Layout;
 const Header = () => {
     const navigate = useNavigate();
     const user = authService.getUser();
+    const [searchTerm, setSearchTerm] = useState('');
 
 
     const handleLogout = async () => {
@@ -18,9 +19,19 @@ const Header = () => {
             message.success('Đăng xuất thành công!');
             navigate('/login');
         } catch (error) {
-
-
             navigate('/login');
+        }
+    };
+
+    const handleSearch = () => {
+        if (searchTerm.trim()) {
+            navigate(`/services?search=${encodeURIComponent(searchTerm.trim())}`);
+        }
+    };
+
+    const handleSearchKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
         }
     };
 
@@ -157,6 +168,8 @@ const Header = () => {
                 position: 'sticky',
                 top: 0,
                 zIndex: 1000,
+                height: '64px',
+                minHeight: '64px'
             }}
         >
 
@@ -173,8 +186,43 @@ const Header = () => {
             </div>
 
 
-            <Space>
-                <span style={{ color: '#666' }}>
+            <div style={{
+                flex: 1,
+                maxWidth: '500px',
+                margin: '0 32px',
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <Input.Search
+                    placeholder="Tìm kiếm dịch vụ..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onSearch={handleSearch}
+                    onKeyPress={handleSearchKeyPress}
+                    enterButton={<SearchOutlined />}
+                    size="large"
+                    style={{
+                        borderRadius: '25px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        border: '1px solid #d9d9d9',
+                        width: '100%'
+                    }}
+                    allowClear
+                />
+            </div>
+
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                minWidth: '200px',
+                justifyContent: 'flex-end'
+            }}>
+                <span style={{
+                    color: '#666',
+                    fontSize: '14px',
+                    fontWeight: '500'
+                }}>
                     Xin chào, {user?.displayName || 'User'}
                 </span>
                 <Dropdown
@@ -188,7 +236,11 @@ const Header = () => {
                             display: 'flex',
                             alignItems: 'center',
                             gap: '8px',
-                            padding: '4px 8px',
+                            padding: '6px 12px',
+                            borderRadius: '8px',
+                            height: 'auto',
+                            border: '1px solid #f0f0f0',
+                            background: '#fafafa'
                         }}
                     >
                         <Avatar
@@ -198,7 +250,7 @@ const Header = () => {
                         />
                     </Button>
                 </Dropdown>
-            </Space>
+            </div>
         </AntHeader>
     );
 };

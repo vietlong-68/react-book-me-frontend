@@ -154,12 +154,36 @@ const ServiceDetailPage = () => {
 
                         <div style={{ marginBottom: '16px' }}>
                             <Space>
-                                <ShopOutlined style={{ color: '#666' }} />
+                                {service.providerLogoUrl ? (
+                                    <Image
+                                        src={getImageUrl(service.providerLogoUrl)}
+                                        alt={service.providerBusinessName || 'Provider Logo'}
+                                        style={{
+                                            width: '24px',
+                                            height: '24px',
+                                            borderRadius: '4px',
+                                            objectFit: 'cover'
+                                        }}
+                                        preview={false}
+                                    />
+                                ) : (
+                                    <ShopOutlined style={{ color: '#666' }} />
+                                )}
                                 <Text strong style={{ fontSize: '16px' }}>
-                                    {service.providerName || 'Nhà cung cấp'}
+                                    {service.providerBusinessName || 'Nhà cung cấp'}
                                 </Text>
                             </Space>
                         </div>
+
+                        {service.categoryName && (
+                            <div style={{ marginBottom: '16px' }}>
+                                <Space>
+                                    <Tag color="blue" style={{ fontSize: '14px', padding: '4px 12px' }}>
+                                        {service.categoryName}
+                                    </Tag>
+                                </Space>
+                            </div>
+                        )}
 
 
                         <div style={{ marginBottom: '16px' }}>

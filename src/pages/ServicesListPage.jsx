@@ -38,11 +38,12 @@ const ServicesListPage = () => {
     });
 
     const categoryId = searchParams.get('category');
+    const searchTerm = searchParams.get('search');
 
     useEffect(() => {
         fetchCategories();
         fetchServices();
-    }, [categoryId, pagination.current, pagination.pageSize]);
+    }, [categoryId, searchTerm, pagination.current, pagination.pageSize]);
 
     const fetchCategories = async () => {
         try {
@@ -66,7 +67,16 @@ const ServicesListPage = () => {
         try {
             let response;
 
-            if (categoryId) {
+            if (searchTerm) {
+
+                response = await providerService.searchServices(
+                    searchTerm,
+                    pagination.current - 1,
+                    pagination.pageSize,
+                    'createdAt',
+                    'desc'
+                );
+            } else if (categoryId) {
 
                 response = await providerService.getServicesByCategory(
                     categoryId,
@@ -137,6 +147,9 @@ const ServicesListPage = () => {
     };
 
     const getPageTitle = () => {
+        if (searchTerm) {
+            return `Kết quả tìm kiếm: "${searchTerm}"`;
+        }
         if (currentCategory) {
             return `Dịch vụ trong danh mục: ${currentCategory.name}`;
         }
@@ -188,6 +201,14 @@ const ServicesListPage = () => {
                     }} ellipsis={{ rows: 2 }}>
                         {service.serviceName}
                     </Title>
+
+                    {service.providerBusinessName && (
+                        <div style={{ marginBottom: '8px' }}>
+                            <Text type="secondary" style={{ fontSize: '12px' }}>
+                                {service.providerBusinessName}
+                            </Text>
+                        </div>
+                    )}
 
                     <div style={{ marginBottom: '12px' }}>
                         <Space>
@@ -262,9 +283,11 @@ const ServicesListPage = () => {
                     {getPageTitle()}
                 </Title>
                 <Text type="secondary" style={{ fontSize: '16px' }}>
-                    {currentCategory
-                        ? `Khám phá các dịch vụ trong danh mục ${currentCategory.name}`
-                        : 'Khám phá tất cả các dịch vụ có sẵn'
+                    {searchTerm
+                        ? `Tìm thấy ${pagination.total} kết quả cho "${searchTerm}"`
+                        : currentCategory
+                            ? `Khám phá các dịch vụ trong danh mục ${currentCategory.name}`
+                            : 'Khám phá tất cả các dịch vụ có sẵn'
                     }
                 </Text>
             </div>
@@ -276,9 +299,11 @@ const ServicesListPage = () => {
                         <SearchOutlined style={{ fontSize: '64px', color: '#ccc', marginBottom: '16px' }} />
                         <Title level={4} type="secondary">Không tìm thấy dịch vụ nào</Title>
                         <Paragraph type="secondary">
-                            {currentCategory
-                                ? `Không có dịch vụ nào trong danh mục ${currentCategory.name}`
-                                : 'Hiện tại không có dịch vụ nào có sẵn'
+                            {searchTerm
+                                ? `Không tìm thấy dịch vụ nào cho "${searchTerm}"`
+                                : currentCategory
+                                    ? `Không có dịch vụ nào trong danh mục ${currentCategory.name}`
+                                    : 'Hiện tại không có dịch vụ nào có sẵn'
                             }
                         </Paragraph>
                     </Card>
