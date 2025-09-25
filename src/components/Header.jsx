@@ -73,7 +73,7 @@ const Header = () => {
                         icon: <CalendarOutlined />,
                         label: 'Lịch hẹn của tôi',
                         onClick: () => {
-                            message.info('Tính năng lịch hẹn đang được phát triển');
+                            navigate('/appointments');
                         },
                     },
                     logoutItem,
@@ -104,7 +104,7 @@ const Header = () => {
                         icon: <CalendarOutlined />,
                         label: 'Lịch hẹn của tôi',
                         onClick: () => {
-                            message.info('Tính năng lịch hẹn đang được phát triển');
+                            navigate('/appointments');
                         },
                     },
                     {

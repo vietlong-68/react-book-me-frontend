@@ -162,5 +162,15 @@ export const providerService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+
+    async getPublicServiceById(serviceId) {
+        try {
+            const response = await apiClient.get(`/services/${serviceId}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };

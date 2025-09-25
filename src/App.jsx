@@ -16,6 +16,8 @@ import ProviderSelectionPage from './pages/ProviderSelectionPage';
 import ServiceManagementPage from './pages/ServiceManagementPage';
 import ScheduleManagementPage from './pages/ScheduleManagementPage';
 import HomePage from './pages/HomePage';
+import ServiceDetailPage from './pages/ServiceDetailPage';
+import AppointmentsPage from './pages/AppointmentsPage';
 
 
 import Dashboard from './pages/admin/Dashboard';
@@ -112,6 +114,26 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <ScheduleManagementPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/services/:serviceId"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <ServiceDetailPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/appointments"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <AppointmentsPage />
                 </AppLayout>
               </ProtectedRoute>
             }

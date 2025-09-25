@@ -2,13 +2,21 @@ import apiClient from './apiClient';
 
 export const scheduleService = {
 
-    async getProviderSchedules(providerId, startDate, endDate) {
+    async getProviderSchedules() {
         try {
-            const params = new URLSearchParams();
-            if (startDate) params.append('startDate', startDate);
-            if (endDate) params.append('endDate', endDate);
+            const response = await apiClient.get(`/provider/schedules`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
+    },
 
-            const response = await apiClient.get(`/provider/schedules?providerId=${providerId}&${params.toString()}`);
+
+    async getAvailableSchedules(serviceId) {
+        try {
+            const response = await apiClient.get(`/schedules/available`, {
+                params: { serviceId }
+            });
             return response.data;
         } catch (error) {
             throw error.response?.data || error;
@@ -48,7 +56,7 @@ export const scheduleService = {
 
     async getScheduleById(scheduleId) {
         try {
-            const response = await apiClient.get(`/provider/schedules/${scheduleId}`);
+            const response = await apiClient.get(`/schedules/${scheduleId}`);
             return response.data;
         } catch (error) {
             throw error.response?.data || error;

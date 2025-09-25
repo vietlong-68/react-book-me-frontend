@@ -24,7 +24,17 @@ export const appointmentService = {
 
     async getAppointmentById(appointmentId) {
         try {
-            const response = await apiClient.get(`/user/appointments/${appointmentId}`);
+            const response = await apiClient.get(`/appointments/${appointmentId}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
+    },
+
+
+    async createAppointment(appointmentData) {
+        try {
+            const response = await apiClient.post('/appointments', appointmentData);
             return response.data;
         } catch (error) {
             throw error.response?.data || error;

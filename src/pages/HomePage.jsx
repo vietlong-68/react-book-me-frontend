@@ -50,10 +50,21 @@ const HomePage = () => {
             }
 
 
-            const appointmentsResponse = await appointmentService.getAppointmentsByStatus('SCHEDULED', 0, 3);
-            if (appointmentsResponse.success) {
-                setUpcomingAppointments(appointmentsResponse.data.content || []);
+
+            const scheduledResponse = await appointmentService.getAppointmentsByStatus('SCHEDULED', 0, 3);
+            const confirmedResponse = await appointmentService.getAppointmentsByStatus('CONFIRMED', 0, 3);
+
+            let allUpcomingAppointments = [];
+            if (scheduledResponse.success) {
+                allUpcomingAppointments = [...allUpcomingAppointments, ...(scheduledResponse.data || [])];
             }
+            if (confirmedResponse.success) {
+                allUpcomingAppointments = [...allUpcomingAppointments, ...(confirmedResponse.data || [])];
+            }
+
+
+            allUpcomingAppointments.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+            setUpcomingAppointments(allUpcomingAppointments.slice(0, 3));
 
 
             const categoriesResponse = await categoryService.getCategories();
@@ -100,8 +111,6 @@ const HomePage = () => {
                             border: '1px solid #f0f0f0',
                             borderRadius: '8px'
                         }}
-                        hoverable
-                        onClick={() => navigate('/appointments')}
                     >
                         <Row align="middle" justify="space-between">
                             <Col flex="auto">
@@ -119,7 +128,7 @@ const HomePage = () => {
                                 <div>
                                     <ClockCircleOutlined style={{ marginRight: '4px', color: '#666' }} />
                                     <Text type="secondary">
-                                        {formatDateTime(appointment.scheduledTime)}
+                                        {formatDateTime(appointment.startTime)}
                                     </Text>
                                 </div>
                             </Col>
@@ -129,15 +138,6 @@ const HomePage = () => {
                         </Row>
                     </Card>
                 ))}
-                <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                    <Button
-                        type="link"
-                        icon={<EyeOutlined />}
-                        onClick={() => navigate('/appointments')}
-                    >
-                        Xem tất cả lịch hẹn
-                    </Button>
-                </div>
             </div>
         );
     };
@@ -262,10 +262,19 @@ const HomePage = () => {
 
             <Card
                 title={
-                    <Space>
-                        <CalendarOutlined />
-                        <span>Lịch hẹn sắp tới</span>
-                    </Space>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Space>
+                            <CalendarOutlined />
+                            <span>Lịch hẹn sắp tới</span>
+                        </Space>
+                        <Button
+                            type="link"
+                            onClick={() => navigate('/appointments')}
+                            style={{ padding: 0 }}
+                        >
+                            Xem tất cả lịch hẹn →
+                        </Button>
+                    </div>
                 }
                 style={{ marginBottom: '32px' }}
             >

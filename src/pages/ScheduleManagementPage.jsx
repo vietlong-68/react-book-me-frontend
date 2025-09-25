@@ -79,7 +79,7 @@ const ScheduleManagementPage = () => {
             const startDate = currentDate.startOf('month').format('YYYY-MM-DD');
             const endDate = currentDate.endOf('month').format('YYYY-MM-DD');
 
-            const response = await scheduleService.getProviderSchedules(providerId, startDate, endDate);
+            const response = await scheduleService.getProviderSchedules();
             if (response.success) {
                 setSchedules(response.data || []);
             } else {
