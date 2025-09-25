@@ -48,5 +48,42 @@ export const appointmentService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+
+    async getProviderAppointmentsByStatus(status, page = 0, size = 10) {
+        try {
+            const response = await apiClient.get(`/provider/appointments/status/${status}?page=${page}&size=${size}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
+    },
+
+    async getProviderAppointmentsPaginated(page = 0, size = 10) {
+        try {
+            const response = await apiClient.get(`/provider/appointments/paginated?page=${page}&size=${size}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
+    },
+
+    async confirmAppointment(appointmentId) {
+        try {
+            const response = await apiClient.put(`/appointments/${appointmentId}/confirm`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
+    },
+
+    async completeAppointment(appointmentId) {
+        try {
+            const response = await apiClient.put(`/appointments/${appointmentId}/complete`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };

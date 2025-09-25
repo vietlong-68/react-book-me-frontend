@@ -61,5 +61,14 @@ export const scheduleService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+    async createRecurringSchedule(data) {
+        try {
+            const response = await apiClient.post('/provider/schedules/recurring', data);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };

@@ -35,6 +35,7 @@ import {
 import { providerService } from '../services/providerService';
 import { scheduleService } from '../services/scheduleService';
 import ScheduleModal from '../components/ScheduleModal';
+import RecurringScheduleModal from '../components/RecurringScheduleModal';
 import { getImageUrl } from '../utils/imageUtils';
 import dayjs from 'dayjs';
 
@@ -48,6 +49,7 @@ const ScheduleManagementPage = () => {
     const [schedules, setSchedules] = useState([]);
     const [provider, setProvider] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [recurringModalVisible, setRecurringModalVisible] = useState(false);
     const [editingSchedule, setEditingSchedule] = useState(null);
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [activeView, setActiveView] = useState('list');
@@ -441,10 +443,10 @@ const ScheduleManagementPage = () => {
                 <Button
                     type="text"
                     icon={<ArrowLeftOutlined />}
-                    onClick={() => navigate('/service-management')}
+                    onClick={() => navigate(`/service-management/${providerId}`)}
                     style={{ marginBottom: '16px' }}
                 >
-                    Quay lại chọn nhà cung cấp
+                    Quay lại
                 </Button>
 
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
@@ -541,7 +543,15 @@ const ScheduleManagementPage = () => {
                                     setModalVisible(true);
                                 }}
                             >
-                                + Tạo Lịch làm việc mới
+                                Tạo Lịch làm việc đơn
+                            </Button>
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                                size="large"
+                                onClick={() => setRecurringModalVisible(true)}
+                            >
+                                Tạo Lịch làm việc cố định
                             </Button>
                         </Space>
                     </Col>
@@ -618,6 +628,16 @@ const ScheduleManagementPage = () => {
                     fetchSchedules();
                     setModalVisible(false);
                     setEditingSchedule(null);
+                }}
+                providerId={providerId}
+            />
+
+            <RecurringScheduleModal
+                visible={recurringModalVisible}
+                onCancel={() => setRecurringModalVisible(false)}
+                onSuccess={() => {
+                    fetchSchedules();
+                    setRecurringModalVisible(false);
                 }}
                 providerId={providerId}
             />

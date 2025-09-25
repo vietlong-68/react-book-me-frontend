@@ -157,13 +157,6 @@ const HomePage = () => {
                             onClick={() => navigate(`/services?category=${category.id}`)}
                         >
                             <div style={{ padding: '20px' }}>
-                                <div style={{
-                                    fontSize: '24px',
-                                    marginBottom: '8px',
-                                    color: '#1890ff'
-                                }}>
-                                    🏷️
-                                </div>
                                 <Text strong style={{ fontSize: '14px' }}>
                                     {category.name}
                                 </Text>
@@ -203,7 +196,6 @@ const HomePage = () => {
                                         justifyContent: 'center',
                                         color: '#999'
                                     }}>
-                                        📷
                                     </div>
                                 )
                             }

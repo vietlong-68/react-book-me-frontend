@@ -349,6 +349,13 @@ const ServiceManagementPage = () => {
                             <Button
                                 icon={<CalendarOutlined />}
                                 size="large"
+                                onClick={() => navigate(`/appointment-management/${providerId}`)}
+                            >
+                                Quản lý Cuộc hẹn
+                            </Button>
+                            <Button
+                                icon={<CalendarOutlined />}
+                                size="large"
                                 onClick={() => {
                                     navigate(`/schedule-management/${providerId}`);
                                 }}
