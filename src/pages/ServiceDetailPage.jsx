@@ -164,7 +164,7 @@ const ServiceDetailPage = () => {
                                             borderRadius: '4px',
                                             objectFit: 'cover'
                                         }}
-                                        preview={false}
+                                        preview={true}
                                     />
                                 ) : (
                                     <ShopOutlined style={{ color: '#666' }} />
@@ -188,7 +188,6 @@ const ServiceDetailPage = () => {
 
                         <div style={{ marginBottom: '16px' }}>
                             <Space>
-                                <DollarOutlined style={{ color: '#52c41a', fontSize: '20px' }} />
                                 <Text strong style={{ fontSize: '24px', color: '#52c41a' }}>
                                     {formatPrice(service.price)}
                                 </Text>
