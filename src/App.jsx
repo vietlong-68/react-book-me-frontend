@@ -18,6 +18,7 @@ import ScheduleManagementPage from './pages/ScheduleManagementPage';
 import HomePage from './pages/HomePage';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import AppointmentsPage from './pages/AppointmentsPage';
+import ServicesListPage from './pages/ServicesListPage';
 
 
 import Dashboard from './pages/admin/Dashboard';
@@ -134,6 +135,16 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <AppointmentsPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/services"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <ServicesListPage />
                 </AppLayout>
               </ProtectedRoute>
             }

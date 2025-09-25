@@ -172,5 +172,14 @@ export const providerService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+    async getServicesByCategory(categoryId, page = 0, size = 10, sortBy = 'createdAt', sortDir = 'desc') {
+        try {
+            const response = await apiClient.get(`/categories/${categoryId}/services?page=${page}&size=${size}&sortBy=${sortBy}&sortDir=${sortDir}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };
