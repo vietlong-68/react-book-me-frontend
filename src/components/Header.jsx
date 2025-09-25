@@ -112,7 +112,7 @@ const Header = () => {
                         icon: <AppstoreOutlined />,
                         label: 'Quản lý dịch vụ',
                         onClick: () => {
-                            message.info('Tính năng quản lý dịch vụ đang được phát triển');
+                            navigate('/service-management');
                         },
                     },
                     logoutItem,
