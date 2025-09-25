@@ -75,7 +75,7 @@ const ProviderSelectionPage = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
 
             <div style={{ marginBottom: '32px' }}>
                 <Button
@@ -107,135 +107,194 @@ const ProviderSelectionPage = () => {
                     </Button>
                 </Card>
             ) : (
-                <Row gutter={[24, 24]}>
+                <div>
                     {providers.map((provider) => {
                         const statusConfig = getStatusConfig(provider.status, provider.isVerified);
 
                         return (
-                            <Col xs={24} sm={12} lg={8} xl={6} key={provider.id}>
-                                <Card
-                                    hoverable
-                                    onClick={() => handleProviderSelect(provider.id)}
-                                    style={{
-                                        borderRadius: '12px',
-                                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        height: '100%'
-                                    }}
-                                    bodyStyle={{ padding: '20px' }}
-                                >
-
-                                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-                                        {provider.logoUrl ? (
-                                            <img
-                                                src={getImageUrl(provider.logoUrl)}
-                                                alt={provider.businessName}
-                                                style={{
-                                                    width: '60px',
-                                                    height: '60px',
+                            <Card
+                                key={provider.id}
+                                hoverable
+                                onClick={() => handleProviderSelect(provider.id)}
+                                style={{
+                                    marginBottom: '16px',
+                                    borderRadius: '12px',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                bodyStyle={{ padding: '20px' }}
+                            >
+                                <Row align="top" gutter={24}>
+                                    { }
+                                    <Col flex="0 0 100px">
+                                        <div style={{ textAlign: 'center' }}>
+                                            {provider.logoUrl ? (
+                                                <img
+                                                    src={getImageUrl(provider.logoUrl)}
+                                                    alt={provider.businessName}
+                                                    style={{
+                                                        width: '100px',
+                                                        height: '100px',
+                                                        borderRadius: '50%',
+                                                        objectFit: 'cover',
+                                                        border: '3px solid #f0f0f0',
+                                                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div style={{
+                                                    width: '100px',
+                                                    height: '100px',
                                                     borderRadius: '50%',
-                                                    objectFit: 'cover',
-                                                    border: '2px solid #f0f0f0'
-                                                }}
-                                            />
-                                        ) : (
+                                                    background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    margin: '0 auto',
+                                                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                                                }}>
+                                                    <ShopOutlined style={{ fontSize: '40px', color: '#fff' }} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Col>
+
+                                    <Col flex="auto">
+                                        <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                            { }
+                                            <div style={{ marginBottom: '16px' }}>
+                                                <Title level={2} style={{
+                                                    marginBottom: '8px',
+                                                    color: '#1e3a8a',
+                                                    fontSize: '24px'
+                                                }}>
+                                                    {provider.businessName}
+                                                </Title>
+                                                <Tag
+                                                    color={statusConfig.color}
+                                                    icon={statusConfig.icon}
+                                                    style={{
+                                                        fontSize: '14px',
+                                                        padding: '4px 12px',
+                                                        borderRadius: '20px'
+                                                    }}
+                                                >
+                                                    {statusConfig.text}
+                                                </Tag>
+                                            </div>
+
+                                            { }
                                             <div style={{
-                                                width: '60px',
-                                                height: '60px',
-                                                borderRadius: '50%',
-                                                background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                margin: '0 auto'
+                                                marginBottom: '16px',
+                                                padding: '16px',
+                                                backgroundColor: '#f8f9fa',
+                                                borderRadius: '8px',
+                                                border: '1px solid #e9ecef'
                                             }}>
-                                                <ShopOutlined style={{ fontSize: '24px', color: '#fff' }} />
+                                                <Row gutter={[16, 8]}>
+                                                    {provider.address && (
+                                                        <Col span={24}>
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <EnvironmentOutlined style={{
+                                                                    marginRight: '8px',
+                                                                    color: '#1890ff',
+                                                                    fontSize: '16px'
+                                                                }} />
+                                                                <Text style={{ fontSize: '14px', color: '#333' }}>
+                                                                    {provider.address}
+                                                                </Text>
+                                                            </div>
+                                                        </Col>
+                                                    )}
+                                                    {provider.phoneNumber && (
+                                                        <Col span={12}>
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <PhoneOutlined style={{
+                                                                    marginRight: '8px',
+                                                                    color: '#52c41a',
+                                                                    fontSize: '16px'
+                                                                }} />
+                                                                <Text style={{ fontSize: '14px', color: '#333' }}>
+                                                                    {provider.phoneNumber}
+                                                                </Text>
+                                                            </div>
+                                                        </Col>
+                                                    )}
+                                                    {provider.websiteUrl && (
+                                                        <Col span={12}>
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <GlobalOutlined style={{
+                                                                    marginRight: '8px',
+                                                                    color: '#722ed1',
+                                                                    fontSize: '16px'
+                                                                }} />
+                                                                <Text
+                                                                    style={{
+                                                                        fontSize: '14px',
+                                                                        color: '#1890ff',
+                                                                        textDecoration: 'underline'
+                                                                    }}
+                                                                    ellipsis={{ tooltip: provider.websiteUrl }}
+                                                                >
+                                                                    {provider.websiteUrl}
+                                                                </Text>
+                                                            </div>
+                                                        </Col>
+                                                    )}
+                                                </Row>
                                             </div>
-                                        )}
-                                    </div>
 
+                                            { }
+                                            {provider.bio && (
+                                                <div style={{
+                                                    marginBottom: '16px',
+                                                    padding: '12px',
+                                                    backgroundColor: '#fff',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #e9ecef'
+                                                }}>
+                                                    <Text style={{
+                                                        fontSize: '14px',
+                                                        color: '#666',
+                                                        fontStyle: 'italic'
+                                                    }}>
+                                                        "{provider.bio}"
+                                                    </Text>
+                                                </div>
+                                            )}
 
-                                    <Title level={4} style={{
-                                        textAlign: 'center',
-                                        marginBottom: '12px',
-                                        color: '#1e3a8a'
-                                    }}>
-                                        {provider.businessName}
-                                    </Title>
-
-
-                                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-                                        <Tag
-                                            color={statusConfig.color}
-                                            icon={statusConfig.icon}
-                                            style={{ fontSize: '12px' }}
-                                        >
-                                            {statusConfig.text}
-                                        </Tag>
-                                    </div>
-
-
-                                    <div style={{ marginBottom: '16px' }}>
-                                        {provider.address && (
-                                            <div style={{ marginBottom: '8px' }}>
-                                                <EnvironmentOutlined style={{ marginRight: '8px', color: '#666' }} />
-                                                <Text type="secondary" style={{ fontSize: '12px' }}>
-                                                    {provider.address}
-                                                </Text>
+                                            { }
+                                            <div style={{
+                                                marginTop: 'auto',
+                                                textAlign: 'right'
+                                            }}>
+                                                <div style={{
+                                                    display: 'inline-block',
+                                                    padding: '12px 20px',
+                                                    background: 'linear-gradient(135deg, #1890ff 0%, #40a9ff 100%)',
+                                                    borderRadius: '25px',
+                                                    border: 'none',
+                                                    boxShadow: '0 2px 8px rgba(24, 144, 255, 0.3)',
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.3s ease'
+                                                }}>
+                                                    <Text style={{
+                                                        fontSize: '14px',
+                                                        color: '#fff',
+                                                        fontWeight: '500'
+                                                    }}>
+                                                        Quản lý dịch vụ →
+                                                    </Text>
+                                                </div>
                                             </div>
-                                        )}
-
-                                        {provider.phoneNumber && (
-                                            <div style={{ marginBottom: '8px' }}>
-                                                <PhoneOutlined style={{ marginRight: '8px', color: '#666' }} />
-                                                <Text type="secondary" style={{ fontSize: '12px' }}>
-                                                    {provider.phoneNumber}
-                                                </Text>
-                                            </div>
-                                        )}
-
-                                        {provider.websiteUrl && (
-                                            <div>
-                                                <GlobalOutlined style={{ marginRight: '8px', color: '#666' }} />
-                                                <Text type="secondary" style={{ fontSize: '12px' }}>
-                                                    {provider.websiteUrl}
-                                                </Text>
-                                            </div>
-                                        )}
-                                    </div>
-
-
-                                    {provider.bio && (
-                                        <Paragraph
-                                            ellipsis={{ rows: 2 }}
-                                            style={{
-                                                fontSize: '12px',
-                                                color: '#666',
-                                                marginBottom: '16px'
-                                            }}
-                                        >
-                                            {provider.bio}
-                                        </Paragraph>
-                                    )}
-
-
-                                    <div style={{
-                                        textAlign: 'center',
-                                        padding: '8px',
-                                        background: '#f8f9fa',
-                                        borderRadius: '6px',
-                                        border: '1px dashed #d9d9d9'
-                                    }}>
-                                        <Text type="secondary" style={{ fontSize: '12px' }}>
-                                            Nhấp để quản lý dịch vụ
-                                        </Text>
-                                    </div>
-                                </Card>
-                            </Col>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Card>
                         );
                     })}
-                </Row>
+                </div>
             )}
         </div>
     );
