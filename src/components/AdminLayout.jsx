@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Typography } from 'antd';
+import { Layout, Menu, Typography, Button } from 'antd';
 import {
     DashboardOutlined,
     FileTextOutlined,
@@ -8,7 +8,8 @@ import {
     AppstoreOutlined,
     TagsOutlined,
     SettingOutlined,
-    SecurityScanOutlined
+    SecurityScanOutlined,
+    HomeOutlined
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -121,6 +122,18 @@ const AdminLayout = ({ children }) => {
                     }}>
                         {collapsed ? 'AM' : 'Admin Panel'}
                     </Title>
+                    <Button
+                        type="link"
+                        icon={<HomeOutlined />}
+                        onClick={() => navigate('/')}
+                        style={{
+                            color: '#1890ff',
+                            marginTop: '8px',
+                            fontSize: '14px'
+                        }}
+                    >
+                        {collapsed ? '' : 'Quay lại trang chủ'}
+                    </Button>
                 </div>
 
                 <Menu

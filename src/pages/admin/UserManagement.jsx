@@ -170,12 +170,32 @@ const UserManagement = () => {
         }
     };
 
+    const handleCopyId = (id) => {
+        navigator.clipboard.writeText(id).then(() => {
+            message.success('Đã copy ID vào clipboard!');
+        }).catch(() => {
+            message.error('Không thể copy ID');
+        });
+    };
+
     const columns = [
         {
             title: 'Tên hiển thị',
             dataIndex: 'displayName',
             key: 'displayName',
-            render: (text) => <Text strong>{text}</Text>
+            render: (text, record) => (
+                <Text
+                    strong
+                    style={{
+                        cursor: 'pointer',
+                        color: '#1890ff'
+                    }}
+                    onClick={() => handleCopyId(record.id)}
+                    title="Click để copy ID"
+                >
+                    {text}
+                </Text>
+            )
         },
         {
             title: 'Email',
