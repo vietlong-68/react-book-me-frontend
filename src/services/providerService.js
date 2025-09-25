@@ -102,39 +102,39 @@ export const providerService = {
     },
 
 
-    async updateProvider(providerId, providerData) {
-        try {
-            const response = await apiClient.put(`/provider/${providerId}`, providerData);
-            return response.data;
-        } catch (error) {
-            throw error.response?.data || error;
-        }
-    },
 
-
-    async updateProviderLogo(providerId, logoFile) {
+    async updateProvider(providerId, providerData, logoFile = null, bannerFile = null) {
         try {
             const formData = new FormData();
-            formData.append('logoFile', logoFile);
-
-            const response = await apiClient.put(`/provider/${providerId}/logo`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            return response.data;
-        } catch (error) {
-            throw error.response?.data || error;
-        }
-    },
 
 
-    async updateProviderBanner(providerId, bannerFile) {
-        try {
-            const formData = new FormData();
-            formData.append('bannerFile', bannerFile);
+            if (providerData.businessName) {
+                formData.append('businessName', providerData.businessName);
+            }
+            if (providerData.bio) {
+                formData.append('bio', providerData.bio);
+            }
+            if (providerData.address) {
+                formData.append('address', providerData.address);
+            }
+            if (providerData.phoneNumber) {
+                formData.append('phoneNumber', providerData.phoneNumber);
+            }
+            if (providerData.websiteUrl) {
+                formData.append('websiteUrl', providerData.websiteUrl);
+            }
 
-            const response = await apiClient.put(`/provider/${providerId}/banner`, formData, {
+
+            if (logoFile) {
+                formData.append('logoFile', logoFile);
+            }
+
+
+            if (bannerFile) {
+                formData.append('bannerFile', bannerFile);
+            }
+
+            const response = await apiClient.put(`/provider/${providerId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

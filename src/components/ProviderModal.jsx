@@ -42,10 +42,10 @@ const ProviderModal = ({
         if (visible && provider) {
             form.setFieldsValue({
                 businessName: provider.businessName,
-                description: provider.description,
+                bio: provider.bio,
                 address: provider.address,
                 phoneNumber: provider.phoneNumber,
-                website: provider.website
+                websiteUrl: provider.websiteUrl
             });
 
             if (provider.logoUrl) {
@@ -73,15 +73,17 @@ const ProviderModal = ({
             return;
         }
 
-        if (file.originFileObj) {
-            setLogoFile(file.originFileObj);
+
+        if (file.originFileObj || file) {
+            const fileObj = file.originFileObj || file;
+            setLogoFile(fileObj);
 
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 setLogoPreview(e.target.result);
             };
-            reader.readAsDataURL(file.originFileObj);
+            reader.readAsDataURL(fileObj);
         }
     };
 
@@ -94,15 +96,17 @@ const ProviderModal = ({
             return;
         }
 
-        if (file.originFileObj) {
-            setBannerFile(file.originFileObj);
+
+        if (file.originFileObj || file) {
+            const fileObj = file.originFileObj || file;
+            setBannerFile(fileObj);
 
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 setBannerPreview(e.target.result);
             };
-            reader.readAsDataURL(file.originFileObj);
+            reader.readAsDataURL(fileObj);
         }
     };
 
@@ -113,17 +117,7 @@ const ProviderModal = ({
             const values = await form.validateFields();
 
 
-            await providerService.updateProvider(providerId, values);
-
-
-            if (logoFile) {
-                await providerService.updateProviderLogo(providerId, logoFile);
-            }
-
-
-            if (bannerFile) {
-                await providerService.updateProviderBanner(providerId, bannerFile);
-            }
+            await providerService.updateProvider(providerId, values, logoFile, bannerFile);
 
             message.success('Cập nhật thông tin nhà cung cấp thành công!');
             onSuccess();
@@ -186,7 +180,7 @@ const ProviderModal = ({
                     <Col span={24}>
                         <Form.Item
                             label="Mô tả"
-                            name="description"
+                            name="bio"
                         >
                             <TextArea
                                 rows={3}
@@ -222,7 +216,7 @@ const ProviderModal = ({
                     <Col span={24}>
                         <Form.Item
                             label="Website"
-                            name="website"
+                            name="websiteUrl"
                             rules={[
                                 { type: 'url', message: 'URL website không hợp lệ' }
                             ]}
@@ -263,9 +257,6 @@ const ProviderModal = ({
                                     </Button>
                                 </Upload>
                             </div>
-                            <Text type="secondary" style={{ fontSize: '12px' }}>
-                                Khuyến nghị: ảnh vuông, tỷ lệ 1:1, tối thiểu 200x200px
-                            </Text>
                         </Form.Item>
                     </Col>
 
@@ -297,9 +288,6 @@ const ProviderModal = ({
                                     </Button>
                                 </Upload>
                             </div>
-                            <Text type="secondary" style={{ fontSize: '12px' }}>
-                                Khuyến nghị: ảnh ngang, tỷ lệ 16:9, tối thiểu 1200x675px
-                            </Text>
                         </Form.Item>
                     </Col>
                 </Row>
