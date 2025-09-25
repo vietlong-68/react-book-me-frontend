@@ -23,7 +23,8 @@ import {
     ArrowLeftOutlined,
     SearchOutlined,
     ShopOutlined,
-    SettingOutlined
+    SettingOutlined,
+    CalendarOutlined
 } from '@ant-design/icons';
 import { providerService } from '../services/providerService';
 import ServiceModal from '../components/ServiceModal';
@@ -345,6 +346,15 @@ const ServiceManagementPage = () => {
                     </Col>
                     <Col>
                         <Space>
+                            <Button
+                                icon={<CalendarOutlined />}
+                                size="large"
+                                onClick={() => {
+                                    navigate(`/schedule-management/${providerId}`);
+                                }}
+                            >
+                                Quản lý Lịch làm việc
+                            </Button>
                             <Button
                                 icon={<SettingOutlined />}
                                 size="large"

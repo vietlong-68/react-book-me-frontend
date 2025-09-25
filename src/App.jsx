@@ -14,6 +14,7 @@ import EditApplicationPage from './pages/EditApplicationPage';
 import ProfilePage from './pages/ProfilePage';
 import ProviderSelectionPage from './pages/ProviderSelectionPage';
 import ServiceManagementPage from './pages/ServiceManagementPage';
+import ScheduleManagementPage from './pages/ScheduleManagementPage';
 
 
 import Dashboard from './pages/admin/Dashboard';
@@ -100,6 +101,16 @@ function App() {
               <ProtectedRoute>
                 <AppLayout>
                   <ServiceManagementPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/schedule-management/:providerId"
+            element={
+              <ProtectedRoute>
+                <AppLayout>
+                  <ScheduleManagementPage />
                 </AppLayout>
               </ProtectedRoute>
             }
