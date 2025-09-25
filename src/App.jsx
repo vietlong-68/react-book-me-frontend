@@ -15,6 +15,7 @@ import ProfilePage from './pages/ProfilePage';
 import ProviderSelectionPage from './pages/ProviderSelectionPage';
 import ServiceManagementPage from './pages/ServiceManagementPage';
 import ScheduleManagementPage from './pages/ScheduleManagementPage';
+import HomePage from './pages/HomePage';
 
 
 import Dashboard from './pages/admin/Dashboard';
@@ -40,7 +41,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <AppLayout>
-                  <Home />
+                  <HomePage />
                 </AppLayout>
               </ProtectedRoute>
             }

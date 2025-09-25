@@ -152,5 +152,15 @@ export const providerService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+
+    async getPublicServices(page = 0, size = 10) {
+        try {
+            const response = await apiClient.get(`/services?page=${page}&size=${size}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };
