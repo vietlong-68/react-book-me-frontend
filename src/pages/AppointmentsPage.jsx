@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Card,
     Typography,
@@ -34,6 +35,7 @@ const { Search } = Input;
 const { Option } = Select;
 
 const AppointmentsPage = () => {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [appointments, setAppointments] = useState([]);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -135,12 +137,44 @@ const AppointmentsPage = () => {
         }
     };
 
+    const handleCancelAppointment = async (appointmentId) => {
+        try {
+            const response = await appointmentService.cancelAppointment(appointmentId);
+            if (response.success) {
+                message.success('Hủy lịch hẹn thành công');
+                setDetailModalVisible(false);
+                fetchAppointments();
+            } else {
+                message.error(response.message || 'Không thể hủy lịch hẹn');
+            }
+        } catch (error) {
+
+            message.error('Không thể hủy lịch hẹn');
+        }
+    };
+
+    const handleServiceClick = (serviceId) => {
+        navigate(`/services/${serviceId}`);
+    };
+
     const columns = [
         {
             title: 'Dịch vụ',
             dataIndex: 'serviceName',
             key: 'serviceName',
-            render: (text) => <Text strong>{text || 'N/A'}</Text>
+            render: (text, record) => (
+                <Text
+                    strong
+                    style={{
+                        color: '#1890ff',
+                        cursor: 'pointer',
+                        textDecoration: 'underline'
+                    }}
+                    onClick={() => handleServiceClick(record.serviceId)}
+                >
+                    {text || 'N/A'}
+                </Text>
+            )
         },
         {
             title: 'Nhà cung cấp',
@@ -281,14 +315,33 @@ const AppointmentsPage = () => {
                 footer={[
                     <Button key="close" onClick={() => setDetailModalVisible(false)}>
                         Đóng
-                    </Button>
+                    </Button>,
+                    selectedAppointment && (selectedAppointment.status === 'SCHEDULED' || selectedAppointment.status === 'CONFIRMED') && (
+                        <Button
+                            key="cancel"
+                            danger
+                            onClick={() => handleCancelAppointment(selectedAppointment.id)}
+                        >
+                            Hủy lịch hẹn
+                        </Button>
+                    )
                 ]}
                 width={600}
             >
                 {selectedAppointment && (
                     <Descriptions column={1} bordered>
                         <Descriptions.Item label="Dịch vụ">
-                            <Text strong>{selectedAppointment.serviceName || 'N/A'}</Text>
+                            <Text
+                                strong
+                                style={{
+                                    color: '#1890ff',
+                                    cursor: 'pointer',
+                                    textDecoration: 'underline'
+                                }}
+                                onClick={() => handleServiceClick(selectedAppointment.serviceId)}
+                            >
+                                {selectedAppointment.serviceName || 'N/A'}
+                            </Text>
                         </Descriptions.Item>
                         <Descriptions.Item label="Nhà cung cấp">
                             {selectedAppointment.providerName || 'N/A'}

@@ -39,5 +39,14 @@ export const appointmentService = {
         } catch (error) {
             throw error.response?.data || error;
         }
+    },
+
+    async cancelAppointment(appointmentId) {
+        try {
+            const response = await apiClient.put(`/appointments/${appointmentId}/cancel`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
+        }
     }
 };
